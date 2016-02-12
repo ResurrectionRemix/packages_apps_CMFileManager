@@ -1,3 +1,5 @@
+-dontwarn
+
 #configuration
 -optimizationpasses 5
 -dontusemixedcaseclassnames
