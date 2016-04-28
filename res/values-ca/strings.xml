@@ -346,7 +346,7 @@
   <!-- Initial directory dialog title -->
   <string name="initial_directory_dialog_title">Carpeta inicial</string>
   <!-- Initial directory label -->
-  <string name="initial_directory_label">Escull la carpeta inicial:</string>
+  <string name="initial_directory_label">Tria la carpeta inicial:</string>
   <!-- Initial directory is relative -->
   <string name="initial_directory_relative_msg">Les rutes relatives no estan permeses.</string>
   <!-- Initial directory error message -->
@@ -602,9 +602,9 @@
   <!-- Preferences - General - Root access mode summary -->
   <string name="pref_access_mode_root_summary">Mode d\'accés de superusuari\n\nAlerta! Aquest mode permet operacions que podrien espatllar el teu dispositiu. És la teva responsabilitat assegurar que les operacions són segures</string>
   <!-- Preferences - General - Restrict secondary users access title -->
-  <string name="pref_restrict_secondary_users_access_title">Restringir l\'accés dels usuaris</string>
+  <string name="pref_restrict_secondary_users_access_title">Restringeix l\'accés dels usuaris</string>
   <!-- Preferences - General - Restrict secondary users access summary -->
-  <string name="pref_restrict_secondary_users_access_summary">Restringir l\'accés a tot el sistema als usuaris secundaris</string>
+  <string name="pref_restrict_secondary_users_access_summary">Restringeix l\'accés a tot el sistema als usuaris secundaris</string>
   <!-- Preferences - Search - Results category -->
   <string name="pref_search_results_category">Resultats</string>
   <!-- Preferences - Search - Show relevance widget -->
