@@ -682,7 +682,8 @@ public class ActionsDialog implements OnItemClickListener, OnItemLongClickListen
         }
 
         //- Remove properties option if multiple files selected
-        if (selection != null && selection.size() > 1) {
+        // or this selection contains a secure folder.
+        if ((selection != null && selection.size() > 1) || containsSecureDirectory(selection)) {
             menu.removeItem(R.id.mnu_actions_properties);
             menu.removeItem(R.id.mnu_actions_properties_current_folder);
         }
@@ -785,6 +786,10 @@ public class ActionsDialog implements OnItemClickListener, OnItemLongClickListen
             menu.removeItem(R.id.mnu_actions_set_as_home);
         } else if (mGlobal && (selection != null && selection.size() > 0)) {
             menu.removeItem(R.id.mnu_actions_global_set_as_home);
+        } else if (!mGlobal && (mFso.isSecure() || mFso.isRemote())) {
+            menu.removeItem(R.id.mnu_actions_set_as_home);
+        } else if (mGlobal && (mFso.isSecure() || mFso.isRemote())) {
+            menu.removeItem(R.id.mnu_actions_global_set_as_home);
         }
 
         // Not allowed in search
@@ -865,5 +870,23 @@ public class ActionsDialog implements OnItemClickListener, OnItemLongClickListen
             resources.add(new LinkedResource(src, dst));
         }
         return resources;
+    }
+
+    private boolean containsSecureDirectory(List<FileSystemObject> selection) {
+        if (mFso != null && FileHelper.isDirectory(mFso) && mFso.isSecure()) {
+            return true;
+        }
+
+        if (selection == null) {
+            return false;
+        }
+
+        for (FileSystemObject fso : selection) {
+            if (FileHelper.isDirectory(fso) && fso.isSecure()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

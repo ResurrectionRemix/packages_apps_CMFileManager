@@ -802,6 +802,10 @@ public class NavigationActivity extends Activity
         if (mActiveDialog != null && mOnConfigChangeListener != null) {
             mOnConfigChangeListener.onConfigurationChanged(newConfig);
         }
+        NavigationView navView = getCurrentNavigationView();
+        if (navView != null) {
+            navView.refreshViewMode();
+        }
     }
 
     /**
