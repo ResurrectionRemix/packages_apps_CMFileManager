@@ -227,6 +227,17 @@ public final class MimeTypeHelper {
     }
 
     /**
+      * Method that checks whether it is a special android cursor mimetype
+      * that we don't support and should filter it all
+      *
+      * @param mimeType The mime type to be checked
+      * @return true if mime type is known, false otherwise
+      */
+     public static final boolean isAndroidCursorMimeType(String mimeType) {
+         return mimeType.startsWith("vnd.android.cursor");
+     }
+
+    /**
      * Method that checks whether a certain mime type is known to
      * the application.
      *
@@ -461,8 +472,8 @@ public final class MimeTypeHelper {
         MimeTypeInfo mimeTypeInfo = null;
         ArrayList<MimeTypeInfo> mimeTypeInfoList = sMimeTypes.get(ext.toLowerCase(Locale.ROOT));
         // Multiple mimetypes map to the same extension, try to resolve it.
-        if (mimeTypeInfoList != null && mimeTypeInfoList.size() > 1 && !firstFound) {
-            if (absolutePath != null) {
+        if (mimeTypeInfoList != null && mimeTypeInfoList.size() > 1) {
+            if ((absolutePath != null) && (!firstFound)) {
                 String mimeType = getAmbiguousExtensionMimeType(absolutePath, ext);
                 mimeTypeInfo = sExtensionMimeTypes.get(ext + mimeType);
             } else {
@@ -480,7 +491,7 @@ public final class MimeTypeHelper {
     private static final String getMimeTypeFromExtension(final FileSystemObject fso) {
         String ext = FileHelper.getExtension(fso);
         if (ext == null) {
-            return null;
+            return "application/octet-stream";
         }
 
         // If this extension is ambiguous, attempt to resolve it.
@@ -492,7 +503,7 @@ public final class MimeTypeHelper {
         //Load from the database of mime types
         MimeTypeInfo mimeTypeInfo = getMimeTypeInternal(fso, ext);
         if (mimeTypeInfo == null) {
-            return null;
+            return "application/octet-stream";
         }
 
         return mimeTypeInfo.mMimeType;
