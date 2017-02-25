@@ -199,6 +199,16 @@ public class ActionsDialog implements OnItemClickListener, OnItemLongClickListen
     }
 
     /**
+     * Method that judges whether the dialog is showing.
+     */
+    public boolean isShowing() {
+        if (this.mDialog != null) {
+            return this.mDialog.isShowing();
+        }
+        return false;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -775,6 +785,10 @@ public class ActionsDialog implements OnItemClickListener, OnItemLongClickListen
             menu.removeItem(R.id.mnu_actions_add_shortcut);
             menu.removeItem(R.id.mnu_actions_add_to_bookmarks);
         } else if (mGlobal) {
+            // Remove shortcuts for secure folders
+            if (mFso != null && mFso.isSecure()) {
+                menu.removeItem(R.id.mnu_actions_add_shortcut_current_folder);
+            }
             if (selection != null && selection.size() > 0) {
                 for (FileSystemObject fso : selection) {
                     if (fso.isSecure() || fso.isRemote()) {

@@ -274,6 +274,7 @@ public class EditorActivity extends Activity implements TextWatcher {
     private class AsyncReader implements AsyncResultListener {
 
         final Object mSync = new Object();
+        boolean mReadDoneLocked = false;
         ByteArrayOutputStream mByteBuffer = null;
         ArrayList<String> mBinaryBuffer = null;
         SpannableStringBuilder mBuffer = null;
@@ -325,6 +326,7 @@ public class EditorActivity extends Activity implements TextWatcher {
         @Override
         public void onAsyncExitCode(int exitCode) {
             synchronized (this.mSync) {
+                mReadDoneLocked = true;
                 this.mSync.notify();
             }
         }
@@ -913,7 +915,14 @@ public class EditorActivity extends Activity implements TextWatcher {
                         toggleNoSuggestions();
                         break;
                     case R.id.mnu_word_wrap:
-                        toggleWordWrap();
+                        DialogHelper.showToast(EditorActivity.this,
+                                R.string.toggle_word_wrap_msg, Toast.LENGTH_SHORT);
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toggleWordWrap();
+                            }
+                        }, 50);
                         break;
                     case R.id.mnu_syntax_highlight:
                         toggleSyntaxHighlight();
@@ -1277,7 +1286,9 @@ public class EditorActivity extends Activity implements TextWatcher {
 
                         // Wait for
                         synchronized (this.mReader.mSync) {
-                            this.mReader.mSync.wait();
+                            while (!this.mReader.mReadDoneLocked) {
+                                this.mReader.mSync.wait();
+                            }
                         }
 
                         // 100%
